@@ -11,8 +11,7 @@ import org.apache.jmeter.testbeans.gui.TypeEditor;
  * User: jan
  * Date: 17/06/12
  * Time: 20:49
- * To change this template use File | Settings | File Templates.
- */
+  */
 public class ScriptSamplerBeanInfo extends BeanInfoSupport {
     public ScriptSamplerBeanInfo() {
         super(ScriptSampler.class);

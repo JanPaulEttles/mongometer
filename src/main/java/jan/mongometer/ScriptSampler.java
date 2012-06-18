@@ -25,7 +25,7 @@ public class ScriptSampler
         extends AbstractSampler
         implements TestBean, TestListener {
 
-    private static final long serialVersionUID = -678108159079724396L;
+    //private static final long serialVersionUID = -678108159079724396L;
 
     private static final Logger log = LoggingManager.getLoggerForClass();
 
