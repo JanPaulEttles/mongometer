@@ -4,6 +4,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mongodb.MongoOptions;
 import org.apache.jorphan.logging.LoggingManager;
 import org.apache.log.Logger;
 
@@ -17,52 +18,35 @@ import com.mongodb.ServerAddress;
  * User: jan
  * Date: 17/06/12
  * Time: 20:46
- * To change this template use File | Settings | File Templates.
  */
+//db.jmeter.insert({"java" : "1"})
 public class MongoDB {
-
-    private Mongo m = null;
-    private DB db = null;
 
     private final Logger log = LoggingManager.getLoggerForClass();
 
+    private Mongo mongo = null;
+    private DB db = null;
+
     public MongoDB(
-            List<String> connections,
+            ArrayList<ServerAddress> serverAddresses,
             String database,
-            int connectionsPerHost,
-            int threadsAllowedToBlockForConnectionMultiplier,
             String username,
-            String password) {
+            String password,
+            MongoOptions mongoOptions) {
 
         try {
             if(log.isDebugEnabled()) {
-                for(String connection : connections) {
-                    log.debug("connection: " + connection);
-                }
                 log.debug("database: " + database);
                 log.debug("username: " + username);
                 log.debug("password: " + password);
             }
 
-            ArrayList<ServerAddress> addresses = new ArrayList<ServerAddress>();
-
-            for(String connection : connections) {
-                addresses.add(new ServerAddress(connection, 27017));
-            }
-            m = new Mongo(addresses);
-            m.getMongoOptions().connectionsPerHost = connectionsPerHost;
-            m.getMongoOptions().threadsAllowedToBlockForConnectionMultiplier = threadsAllowedToBlockForConnectionMultiplier;
-
-            db = m.getDB(database);
+            mongo = new Mongo(serverAddresses, mongoOptions);
+            db = mongo.getDB(database);
 
             boolean authenticated = db.authenticate(username, password.toCharArray());
             if(log.isDebugEnabled()) {
                 log.debug("authenticated: " + authenticated);
-            }
-        }
-        catch(UnknownHostException uhe) {
-            if(log.isWarnEnabled()) {
-                log.warn("", uhe);
             }
         }
         catch(Exception e) {
@@ -76,8 +60,8 @@ public class MongoDB {
     }
     public synchronized void evaluate(String script) {
 
-        if(log.isWarnEnabled()) {
-            log.warn("script: " + script);
+        if(log.isDebugEnabled()) {
+            log.debug("script: " + script);
         }
         db.requestStart();
         db.requestEnsureConnection();
@@ -86,15 +70,15 @@ public class MongoDB {
     }
 
     public void clear() {
-        if(log.isWarnEnabled()) {
-            log.warn("clearing");
+        if(log.isDebugEnabled()) {
+            log.debug("clearing");
         }
 
-        m.close();
+        mongo.close();
 
         //there is no harm in trying to clear up
         db = null;
-        m = null;
+        mongo = null;
         System.gc();
     }
 }

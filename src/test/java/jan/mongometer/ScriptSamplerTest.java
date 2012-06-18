@@ -14,7 +14,6 @@ import org.junit.Test;
  * User: jan
  * Date: 17/06/12
  * Time: 20:51
- * To change this template use File | Settings | File Templates.
  */
 public class ScriptSamplerTest {
 
@@ -36,27 +35,6 @@ public class ScriptSamplerTest {
 
     @After
     public void tearDown() {
-    }
-
-    @Test
-    public void testScript() {
-        ScriptSampler instance = new ScriptSampler();
-        instance.setScript(TEST_STRING);
-        assertSame(instance.getScript(), TEST_STRING);
-    }
-
-    @Test
-    public void testThreadsAllowedToBlockForConnectionMultiplierProperty() {
-        ScriptSampler instance = new ScriptSampler();
-        instance.setThreadsAllowedToBlockForConnectionMultiplier(TEST_STRING);
-        assertSame(instance.getThreadsAllowedToBlockForConnectionMultiplier(), TEST_STRING);
-    }
-
-    @Test
-    public void testConnectionsPerHostProperty() {
-        ScriptSampler instance = new ScriptSampler();
-        instance.setConnectionsPerHost(TEST_STRING);
-        assertSame(instance.getConnectionsPerHost(), TEST_STRING);
     }
 
     @Test
@@ -85,5 +63,103 @@ public class ScriptSamplerTest {
         ScriptSampler instance = new ScriptSampler();
         instance.setPassword(TEST_STRING);
         assertSame(instance.getPassword(), TEST_STRING);
+    }
+
+    @Test
+    public void testThreadsAllowedToBlockForConnectionMultiplierProperty() {
+        ScriptSampler instance = new ScriptSampler();
+        instance.setThreadsAllowedToBlockForConnectionMultiplier(TEST_STRING);
+        assertSame(instance.getThreadsAllowedToBlockForConnectionMultiplier(), TEST_STRING);
+    }
+
+    @Test
+    public void testConnectionsPerHostProperty() {
+        ScriptSampler instance = new ScriptSampler();
+        instance.setConnectionsPerHost(TEST_STRING);
+        assertSame(instance.getConnectionsPerHost(), TEST_STRING);
+    }
+
+    @Test
+    public void testJProperty() {
+        ScriptSampler instance = new ScriptSampler();
+        instance.setJ(TEST_STRING);
+        assertSame(instance.getJ(), TEST_STRING);
+    }
+
+    @Test
+    public void testWProperty() {
+        ScriptSampler instance = new ScriptSampler();
+        instance.setW(TEST_STRING);
+        assertSame(instance.getW(), TEST_STRING);
+    }
+
+    @Test
+    public void testWTimeoutProperty() {
+        ScriptSampler instance = new ScriptSampler();
+        instance.setWTimeout(TEST_STRING);
+        assertSame(instance.getWTimeout(), TEST_STRING);
+    }
+
+    @Test
+    public void testSafeProperty() {
+        ScriptSampler instance = new ScriptSampler();
+        instance.setSafe(TEST_STRING);
+        assertSame(instance.getSafe(), TEST_STRING);
+    }
+
+    @Test
+    public void testFsyncProperty() {
+        ScriptSampler instance = new ScriptSampler();
+        instance.setFsync(TEST_STRING);
+        assertSame(instance.getFsync(), TEST_STRING);
+    }
+
+    @Test
+    public void testAutoConnectRetryProperty() {
+        ScriptSampler instance = new ScriptSampler();
+        instance.setAutoConnectRetry(TEST_STRING);
+        assertSame(instance.getAutoConnectRetry(), TEST_STRING);
+    }
+
+    @Test
+    public void testSocketKeepAliveProperty() {
+        ScriptSampler instance = new ScriptSampler();
+        instance.setSocketKeepAlive(TEST_STRING);
+        assertSame(instance.getSocketKeepAlive(), TEST_STRING);
+    }
+
+    @Test
+    public void testSocketTimeoutProperty() {
+        ScriptSampler instance = new ScriptSampler();
+        instance.setSocketTimeout(TEST_STRING);
+        assertSame(instance.getSocketTimeout(), TEST_STRING);
+    }
+
+    @Test
+    public void testConnectTimeoutProperty() {
+        ScriptSampler instance = new ScriptSampler();
+        instance.setConnectTimeout(TEST_STRING);
+        assertSame(instance.getConnectTimeout(), TEST_STRING);
+    }
+
+    @Test
+    public void testMaxWaitTimeProperty() {
+        ScriptSampler instance = new ScriptSampler();
+        instance.setMaxWaitTime(TEST_STRING);
+        assertSame(instance.getMaxWaitTime(), TEST_STRING);
+    }
+
+    @Test
+    public void testMaxAutoConnectRetryTimeProperty() {
+        ScriptSampler instance = new ScriptSampler();
+        instance.setMaxAutoConnectRetryTime(TEST_STRING);
+        assertSame(instance.getMaxAutoConnectRetryTime(), TEST_STRING);
+    }
+
+    @Test
+    public void testScript() {
+        ScriptSampler instance = new ScriptSampler();
+        instance.setScript(TEST_STRING);
+        assertSame(instance.getScript(), TEST_STRING);
     }
 }
