@@ -65,11 +65,13 @@ public class ScriptSamplerTest {
         assertSame(instance.getPassword(), TEST_STRING);
     }
 
+
+
     @Test
-    public void testThreadsAllowedToBlockForConnectionMultiplierProperty() {
+    public void testAutoConnectRetryProperty() {
         ScriptSampler instance = new ScriptSampler();
-        instance.setThreadsAllowedToBlockForConnectionMultiplier(TEST_STRING);
-        assertSame(instance.getThreadsAllowedToBlockForConnectionMultiplier(), TEST_STRING);
+        instance.setAutoConnectRetry(TEST_STRING);
+        assertSame(instance.getAutoConnectRetry(), TEST_STRING);
     }
 
     @Test
@@ -80,45 +82,24 @@ public class ScriptSamplerTest {
     }
 
     @Test
-    public void testJProperty() {
+    public void testConnectTimeoutProperty() {
         ScriptSampler instance = new ScriptSampler();
-        instance.setJ(TEST_STRING);
-        assertSame(instance.getJ(), TEST_STRING);
+        instance.setConnectTimeout(TEST_STRING);
+        assertSame(instance.getConnectTimeout(), TEST_STRING);
     }
 
     @Test
-    public void testWProperty() {
+    public void testMaxAutoConnectRetryTimeProperty() {
         ScriptSampler instance = new ScriptSampler();
-        instance.setW(TEST_STRING);
-        assertSame(instance.getW(), TEST_STRING);
+        instance.setMaxAutoConnectRetryTime(TEST_STRING);
+        assertSame(instance.getMaxAutoConnectRetryTime(), TEST_STRING);
     }
 
     @Test
-    public void testWTimeoutProperty() {
+    public void testMaxWaitTimeProperty() {
         ScriptSampler instance = new ScriptSampler();
-        instance.setWTimeout(TEST_STRING);
-        assertSame(instance.getWTimeout(), TEST_STRING);
-    }
-
-    @Test
-    public void testSafeProperty() {
-        ScriptSampler instance = new ScriptSampler();
-        instance.setSafe(TEST_STRING);
-        assertSame(instance.getSafe(), TEST_STRING);
-    }
-
-    @Test
-    public void testFsyncProperty() {
-        ScriptSampler instance = new ScriptSampler();
-        instance.setFsync(TEST_STRING);
-        assertSame(instance.getFsync(), TEST_STRING);
-    }
-
-    @Test
-    public void testAutoConnectRetryProperty() {
-        ScriptSampler instance = new ScriptSampler();
-        instance.setAutoConnectRetry(TEST_STRING);
-        assertSame(instance.getAutoConnectRetry(), TEST_STRING);
+        instance.setMaxWaitTime(TEST_STRING);
+        assertSame(instance.getMaxWaitTime(), TEST_STRING);
     }
 
     @Test
@@ -136,25 +117,50 @@ public class ScriptSamplerTest {
     }
 
     @Test
-    public void testConnectTimeoutProperty() {
+    public void testThreadsAllowedToBlockForConnectionMultiplierProperty() {
         ScriptSampler instance = new ScriptSampler();
-        instance.setConnectTimeout(TEST_STRING);
-        assertSame(instance.getConnectTimeout(), TEST_STRING);
+        instance.setThreadsAllowedToBlockForConnectionMultiplier(TEST_STRING);
+        assertSame(instance.getThreadsAllowedToBlockForConnectionMultiplier(), TEST_STRING);
+    }
+
+
+
+    @Test
+    public void testFsyncProperty() {
+        ScriptSampler instance = new ScriptSampler();
+        instance.setFsync(TEST_STRING);
+        assertSame(instance.getFsync(), TEST_STRING);
     }
 
     @Test
-    public void testMaxWaitTimeProperty() {
+    public void testSafeProperty() {
         ScriptSampler instance = new ScriptSampler();
-        instance.setMaxWaitTime(TEST_STRING);
-        assertSame(instance.getMaxWaitTime(), TEST_STRING);
+        instance.setSafe(TEST_STRING);
+        assertSame(instance.getSafe(), TEST_STRING);
     }
 
     @Test
-    public void testMaxAutoConnectRetryTimeProperty() {
+    public void testWaitForJournalingProperty() {
         ScriptSampler instance = new ScriptSampler();
-        instance.setMaxAutoConnectRetryTime(TEST_STRING);
-        assertSame(instance.getMaxAutoConnectRetryTime(), TEST_STRING);
+        instance.setWaitForJournaling(TEST_STRING);
+        assertSame(instance.getWaitForJournaling(), TEST_STRING);
     }
+
+    @Test
+    public void testWriteOperationNumberOfServersProperty() {
+        ScriptSampler instance = new ScriptSampler();
+        instance.setWriteOperationNumberOfServers(TEST_STRING);
+        assertSame(instance.getWriteOperationNumberOfServers(), TEST_STRING);
+    }
+
+    @Test
+    public void testWriteOperationTimeoutProperty() {
+        ScriptSampler instance = new ScriptSampler();
+        instance.setWriteOperationTimeout(TEST_STRING);
+        assertSame(instance.getWriteOperationTimeout(), TEST_STRING);
+    }
+
+
 
     @Test
     public void testScript() {

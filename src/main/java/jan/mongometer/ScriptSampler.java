@@ -25,7 +25,7 @@ public class ScriptSampler
         extends AbstractSampler
         implements TestBean, TestListener {
 
-    //private static final long serialVersionUID = -678108159079724396L;
+    private static final long serialVersionUID = -678108159079724396L;
 
     private static final Logger log = LoggingManager.getLoggerForClass();
 
@@ -34,19 +34,20 @@ public class ScriptSampler
     public final static String USERNAME = "ScriptSampler.username"; //$NON-NLS-1$
     public final static String PASSWORD = "ScriptSampler.password"; //$NON-NLS-1$
 
+    public final static String AUTO_CONNECT_RETRY = "ScriptSampler.autoConnectRetry"; //$NON-NLS-1$
     public final static String CONNECTIONS_PER_HOST = "ScriptSampler.connectionsPerHost"; //$NON-NLS-1$
-    public final static String THREADS_ALLOWED_TO_BLOCK_FOR_CONNECTION_MULTIPLIER = "ScriptSampler.threadsAllowedToBlockForConnectionMultiplier"; //$NON-NLS-1$
+    public final static String CONNECT_TIMEOUT = "ScriptSampler.connectTimeout"; //$NON-NLS-1$
     public final static String MAX_AUTO_CONNECT_RETRY_TIME = "ScriptSampler.maxAutoConnectRetryTime"; //$NON-NLS-1$
     public final static String MAX_WAIT_TIME = "ScriptSampler.maxWaitTime"; //$NON-NLS-1$
-    public final static String CONNECT_TIMEOUT = "ScriptSampler.connectTimeout"; //$NON-NLS-1$
     public final static String SOCKET_TIMEOUT = "ScriptSampler.socketTimeout"; //$NON-NLS-1$
     public final static String SOCKET_KEEP_ALIVE = "ScriptSampler.socketKeepAlive"; //$NON-NLS-1$
-    public final static String AUTO_CONNECT_RETRY = "ScriptSampler.autoConnectRetry"; //$NON-NLS-1$
+    public final static String THREADS_ALLOWED_TO_BLOCK_MULTIPLIER = "ScriptSampler.threadsAllowedToBlockForConnectionMultiplier"; //$NON-NLS-1$
+
     public final static String FSYNC = "ScriptSampler.fsync"; //$NON-NLS-1$
-    public final static String J = "ScriptSampler.j"; //$NON-NLS-1$
     public final static String SAFE = "ScriptSampler.safe"; //$NON-NLS-1$
-    public final static String W = "ScriptSampler.w"; //$NON-NLS-1$
-    public final static String W_TIMEOUT = "ScriptSampler.wTimeout"; //$NON-NLS-1$
+    public final static String WAIT_FOR_JOURNALING = "ScriptSampler.waitForJournaling"; //$NON-NLS-1$
+    public final static String WRITE_OPERATION_NUMBER_OF_SERVERS = "ScriptSampler.writeOperationNumberOfServers"; //$NON-NLS-1$
+    public final static String WRITE_OPERATION_TIMEOUT = "ScriptSampler.writeOperationTimeout"; //$NON-NLS-1$
 
     public final static String SCRIPT = "ScriptSampler.script"; //$NON-NLS-1$
 
@@ -57,6 +58,7 @@ public class ScriptSampler
     public ScriptSampler() {
         classCount++;
         trace("ScriptSampler()");
+
     }
 
     public SampleResult sample(Entry e) {
@@ -115,22 +117,6 @@ public class ScriptSampler
         setProperty(CONNECTION, connection);
     }
 
-    public String getConnectionsPerHost() {
-        return getPropertyAsString(CONNECTIONS_PER_HOST);
-    }
-
-    public void setConnectionsPerHost(String connectionsPerHost) {
-        setProperty(CONNECTIONS_PER_HOST, connectionsPerHost);
-    }
-
-    public String getThreadsAllowedToBlockForConnectionMultiplier() {
-        return getPropertyAsString(THREADS_ALLOWED_TO_BLOCK_FOR_CONNECTION_MULTIPLIER);
-    }
-
-    public void setThreadsAllowedToBlockForConnectionMultiplier(String threadsAllowedToBlockForConnectionMultiplier) {
-        setProperty(THREADS_ALLOWED_TO_BLOCK_FOR_CONNECTION_MULTIPLIER, threadsAllowedToBlockForConnectionMultiplier);
-    }
-
     public String getDatabase() {
         return getPropertyAsString(DATABASE);
     }
@@ -155,12 +141,20 @@ public class ScriptSampler
         setProperty(PASSWORD, password);
     }
 
-    public String getMaxWaitTime() {
-        return getPropertyAsString(MAX_WAIT_TIME);
+    public String getAutoConnectRetry() {
+        return getPropertyAsString(AUTO_CONNECT_RETRY);
     }
 
-    public void setMaxWaitTime(String maxWaitTime) {
-        setProperty(MAX_WAIT_TIME, maxWaitTime);
+    public void setAutoConnectRetry(String autoConnectRetry) {
+        setProperty(AUTO_CONNECT_RETRY, autoConnectRetry);
+    }
+
+    public String getConnectionsPerHost() {
+        return getPropertyAsString(CONNECTIONS_PER_HOST);
+    }
+
+    public void setConnectionsPerHost(String connectionsPerHost) {
+        setProperty(CONNECTIONS_PER_HOST, connectionsPerHost);
     }
 
     public String getConnectTimeout() {
@@ -169,6 +163,22 @@ public class ScriptSampler
 
     public void setConnectTimeout(String connectTimeout) {
         setProperty(CONNECT_TIMEOUT, connectTimeout);
+    }
+
+    public String getMaxAutoConnectRetryTime() {
+        return getPropertyAsString(MAX_AUTO_CONNECT_RETRY_TIME);
+    }
+
+    public void setMaxAutoConnectRetryTime(String maxAutoConnectRetryTime) {
+        setProperty(MAX_AUTO_CONNECT_RETRY_TIME, maxAutoConnectRetryTime);
+    }
+
+    public String getMaxWaitTime() {
+        return getPropertyAsString(MAX_WAIT_TIME);
+    }
+
+    public void setMaxWaitTime(String maxWaitTime) {
+        setProperty(MAX_WAIT_TIME, maxWaitTime);
     }
 
     public String getSocketTimeout() {
@@ -187,44 +197,12 @@ public class ScriptSampler
         setProperty(SOCKET_KEEP_ALIVE, socketKeepAlive);
     }
 
-    public String getAutoConnectRetry() {
-        return getPropertyAsString(AUTO_CONNECT_RETRY);
+    public String getThreadsAllowedToBlockForConnectionMultiplier() {
+        return getPropertyAsString(THREADS_ALLOWED_TO_BLOCK_MULTIPLIER);
     }
 
-    public void setAutoConnectRetry(String autoConnectRetry) {
-        setProperty(AUTO_CONNECT_RETRY, autoConnectRetry);
-    }
-
-    public String getWTimeout() {
-        return getPropertyAsString(W_TIMEOUT);
-    }
-
-    public void setWTimeout(String wtimeout) {
-        setProperty(W_TIMEOUT, wtimeout);
-    }
-
-    public String getJ() {
-        return getPropertyAsString(J);
-    }
-
-    public void setJ(String j) {
-        setProperty(J, j);
-    }
-
-    public String getMaxAutoConnectRetryTime() {
-        return getPropertyAsString(MAX_AUTO_CONNECT_RETRY_TIME);
-    }
-
-    public void setMaxAutoConnectRetryTime(String maxAutoConnectRetryTime) {
-        setProperty(MAX_AUTO_CONNECT_RETRY_TIME, maxAutoConnectRetryTime);
-    }
-
-    public String getW() {
-        return getPropertyAsString(W);
-    }
-
-    public void setW(String w) {
-        setProperty(W, w);
+    public void setThreadsAllowedToBlockForConnectionMultiplier(String threadsAllowed) {
+        setProperty(THREADS_ALLOWED_TO_BLOCK_MULTIPLIER, threadsAllowed);
     }
 
     public String getFsync() {
@@ -242,6 +220,31 @@ public class ScriptSampler
     public void setSafe(String safe) {
         setProperty(SAFE, safe);
     }
+
+    public String getWaitForJournaling() {
+        return getPropertyAsString(WAIT_FOR_JOURNALING);
+    }
+
+    public void setWaitForJournaling(String waitForJournaling) {
+        setProperty(WAIT_FOR_JOURNALING, waitForJournaling);
+    }
+
+    public String getWriteOperationNumberOfServers() {
+        return getPropertyAsString(WRITE_OPERATION_NUMBER_OF_SERVERS);
+    }
+
+    public void setWriteOperationNumberOfServers(String writeOperationNumberOfServers) {
+        setProperty(WRITE_OPERATION_NUMBER_OF_SERVERS, writeOperationNumberOfServers);
+    }
+
+    public String getWriteOperationTimeout() {
+        return getPropertyAsString(WRITE_OPERATION_TIMEOUT);
+    }
+
+    public void setWriteOperationTimeout(String writeOperationTimeout) {
+        setProperty(WRITE_OPERATION_TIMEOUT, writeOperationTimeout);
+    }
+
 
     /*
     * Helper
@@ -270,6 +273,7 @@ public class ScriptSampler
         if(log.isDebugEnabled()) {
             log.debug("testStarted : " + arg0);
         }
+
         ArrayList<ServerAddress> addresses = new ArrayList<ServerAddress>();
         try {
             for(String connection : Arrays.asList(getConnection().split("\\s*,\\s*"))) {
@@ -290,15 +294,19 @@ public class ScriptSampler
         mongoOptions.connectTimeout = Integer.parseInt(getConnectTimeout());
         mongoOptions.connectionsPerHost = Integer.parseInt(getConnectionsPerHost());
         mongoOptions.fsync = Boolean.parseBoolean(getFsync());
-        mongoOptions.j = Boolean.parseBoolean(getJ());
+        mongoOptions.j = Boolean.parseBoolean(getWaitForJournaling());
         mongoOptions.maxAutoConnectRetryTime = Integer.parseInt(getMaxAutoConnectRetryTime());
         mongoOptions.maxWaitTime = Integer.parseInt(getMaxWaitTime());
         mongoOptions.safe = Boolean.parseBoolean(getSafe());
         mongoOptions.socketKeepAlive = Boolean.parseBoolean(getSocketKeepAlive());
         mongoOptions.socketTimeout = Integer.parseInt(getSocketTimeout());
         mongoOptions.threadsAllowedToBlockForConnectionMultiplier = Integer.parseInt(getThreadsAllowedToBlockForConnectionMultiplier());
-        mongoOptions.w = Integer.parseInt(getW());
-        mongoOptions.wtimeout = Integer.parseInt(getWTimeout());
+        mongoOptions.w = Integer.parseInt(getWriteOperationNumberOfServers());
+        mongoOptions.wtimeout = Integer.parseInt(getWriteOperationTimeout());
+
+        if(log.isDebugEnabled()) {
+            log.debug("options : " + mongoOptions.toString());
+        }
 
         mongoDB = new MongoDB(addresses,
                 getDatabase(),

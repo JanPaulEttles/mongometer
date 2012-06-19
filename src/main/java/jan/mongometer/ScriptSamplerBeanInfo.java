@@ -5,6 +5,8 @@ import java.beans.PropertyDescriptor;
 import org.apache.jmeter.testbeans.BeanInfoSupport;
 import org.apache.jmeter.testbeans.gui.TextAreaEditor;
 import org.apache.jmeter.testbeans.gui.TypeEditor;
+import org.apache.jorphan.logging.LoggingManager;
+import org.apache.log.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,7 +15,9 @@ import org.apache.jmeter.testbeans.gui.TypeEditor;
  * Time: 20:49
   */
 public class ScriptSamplerBeanInfo
-    extends BeanInfoSupport {
+        extends BeanInfoSupport {
+
+    private static final Logger log = LoggingManager.getLoggerForClass();
 
     public ScriptSamplerBeanInfo() {
         super(ScriptSampler.class);
@@ -25,99 +29,93 @@ public class ScriptSamplerBeanInfo
                 "username",
                 "password" });
 
-        PropertyDescriptor mongodb = property("connection");
-        mongodb.setValue(NOT_UNDEFINED, Boolean.TRUE);
-        mongodb.setValue(DEFAULT, "");
-
-        mongodb = property("database");
-        mongodb.setValue(NOT_UNDEFINED, Boolean.TRUE);
-        mongodb.setValue(DEFAULT, "");
-
-        mongodb = property("username");
-        mongodb.setValue(NOT_UNDEFINED, Boolean.TRUE);
-        mongodb.setValue(DEFAULT, "");
-
-        mongodb = property("password", TypeEditor.PasswordEditor);
-        mongodb.setValue(NOT_UNDEFINED, Boolean.TRUE);
-        mongodb.setValue(DEFAULT, "");
-
         //http://api.mongodb.org/java/2.7.2/com/mongodb/MongoOptions.html/
-        createPropertyGroup("options", new String[] {
+        createPropertyGroup("options", new String[]{
                 "autoConnectRetry",
                 "connectionsPerHost",
                 "connectTimeout",
-                "fsync",
-                "j",
                 "maxAutoConnectRetryTime",
                 "maxWaitTime",
-                "safe",
                 "socketTimeout",
                 "socketKeepAlive",
-                "threadsAllowedToBlockForConnectionMultiplier",
-                "w",
-                "wtimeout" });
+                "threadsAllowedToBlockForConnectionMultiplier"});
 
-        PropertyDescriptor p = property("autoConnectRetry");
+        //http://api.mongodb.org/java/2.7.2/com/mongodb/MongoOptions.html/
+        createPropertyGroup("writeConcern", new String[] {
+                "fsync",
+                "safe",
+                "waitForJournaling",
+                "writeOperationNumberOfServers",
+                "writeOperationTimeout" });
+
+        createPropertyGroup("sampler", new String[]{
+                "script"});
+
+        PropertyDescriptor p = property("connection");
+        p.setValue(NOT_UNDEFINED, Boolean.TRUE);
+        p.setValue(DEFAULT, "");
+        p = property("database");
+        p.setValue(NOT_UNDEFINED, Boolean.TRUE);
+        p.setValue(DEFAULT, "");
+        p = property("username");
+        p.setValue(NOT_UNDEFINED, Boolean.TRUE);
+        p.setValue(DEFAULT, "");
+        p = property("password", TypeEditor.PasswordEditor);
+        p.setValue(NOT_UNDEFINED, Boolean.TRUE);
+        p.setValue(DEFAULT, "");
+
+        p = property("autoConnectRetry");
         p.setValue(NOT_UNDEFINED, Boolean.TRUE);
         p.setValue(DEFAULT, Boolean.FALSE);
-
         p = property("connectionsPerHost");
         p.setValue(NOT_UNDEFINED, Boolean.TRUE);
-        //based on 20,000 available connections on db.serverStatus()
-        p.setValue(DEFAULT, "4000");
-
+        p.setValue(DEFAULT, "10");
         p = property("connectTimeout");
         p.setValue(NOT_UNDEFINED, Boolean.TRUE);
         p.setValue(DEFAULT, "0");
-
-        p = property("fsync");
+        p = property("threadsAllowedToBlockForConnectionMultiplier");
         p.setValue(NOT_UNDEFINED, Boolean.TRUE);
-        p.setValue(DEFAULT, Boolean.FALSE);
-
-        p = property("j");
-        p.setValue(NOT_UNDEFINED, Boolean.TRUE);
-        p.setValue(DEFAULT, Boolean.FALSE);
-
+        p.setValue(DEFAULT, "5");
         p = property("maxAutoConnectRetryTime");
         p.setValue(NOT_UNDEFINED, Boolean.TRUE);
         p.setValue(DEFAULT, "0");
-
         p = property("maxWaitTime");
         p.setValue(NOT_UNDEFINED, Boolean.TRUE);
         p.setValue(DEFAULT, "120000");
-
-        p = property("safe");
+        p = property("socketTimeout");
         p.setValue(NOT_UNDEFINED, Boolean.TRUE);
-        p.setValue(DEFAULT, Boolean.FALSE);
-
+        p.setValue(DEFAULT, "0");
         p = property("socketKeepAlive");
         p.setValue(NOT_UNDEFINED, Boolean.TRUE);
         p.setValue(DEFAULT, Boolean.FALSE);
 
-        p = property("socketTimeout");
+        p = property("fsync");
+        p.setValue(NOT_UNDEFINED, Boolean.TRUE);
+        p.setValue(DEFAULT, Boolean.FALSE);
+        p = property("safe");
+        p.setValue(NOT_UNDEFINED, Boolean.TRUE);
+        p.setValue(DEFAULT, Boolean.FALSE);
+        p = property("waitForJournaling");
+        p.setValue(NOT_UNDEFINED, Boolean.TRUE);
+        p.setValue(DEFAULT, Boolean.FALSE);
+        p = property("writeOperationNumberOfServers");
+        p.setValue(NOT_UNDEFINED, Boolean.TRUE);
+        p.setValue(DEFAULT, "0");
+        p = property("writeOperationTimeout");
         p.setValue(NOT_UNDEFINED, Boolean.TRUE);
         p.setValue(DEFAULT, "0");
 
-        p = property("threadsAllowedToBlockForConnectionMultiplier");
-        p.setValue(NOT_UNDEFINED, Boolean.TRUE);
-        //based on 20,000 available connections on db.serverStatus() and the docs saying this is the default multiplier
-        p.setValue(DEFAULT, "5");
+        p = property("script");
+        p.setValue(NOT_UNDEFINED, Boolean.FALSE);
+        p.setValue(DEFAULT, "");
+        p.setValue(NOT_EXPRESSION, Boolean.TRUE);
+        p.setPropertyEditorClass(TextAreaEditor.class);
 
-        p = property("w");
-        p.setValue(NOT_UNDEFINED, Boolean.TRUE);
-        p.setValue(DEFAULT, "0");
-
-        p = property("wtimeout");
-        p.setValue(NOT_UNDEFINED, Boolean.TRUE);
-        p.setValue(DEFAULT, "0");
-
-        createPropertyGroup("sampler", new String[] {
-                "script" });
-
-        PropertyDescriptor sampler = property("script");
-        sampler.setValue(NOT_UNDEFINED, Boolean.FALSE);
-        sampler.setValue(DEFAULT, "");
-        sampler.setValue(NOT_EXPRESSION, Boolean.TRUE);
-        sampler.setPropertyEditorClass(TextAreaEditor.class);
+        if(log.isDebugEnabled()) {
+            for (PropertyDescriptor pd : getPropertyDescriptors()) {
+                log.debug(pd.getName());
+                log.debug(pd.getDisplayName());
+            }
+        }
     }
 }

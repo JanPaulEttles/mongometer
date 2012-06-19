@@ -12,7 +12,6 @@ import com.mongodb.DB;
 import com.mongodb.Mongo;
 import com.mongodb.ServerAddress;
 
-//db.jmeter.insert({"java" : "1"})
 /**
  * Created with IntelliJ IDEA.
  * User: jan
