@@ -28,3 +28,5 @@ In the shell
 >use jmeter
 >db.jmeter.find()
 
+mongometer.jar lives in out/artifacts
+It's a java7, 64-bit linux build (just incase you have any issues)
