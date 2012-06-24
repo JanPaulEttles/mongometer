@@ -4,13 +4,10 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mongodb.MongoOptions;
+import com.mongodb.*;
+import com.mongodb.util.JSON;
 import org.apache.jorphan.logging.LoggingManager;
 import org.apache.log.Logger;
-
-import com.mongodb.DB;
-import com.mongodb.Mongo;
-import com.mongodb.ServerAddress;
 
 /**
  * Created with IntelliJ IDEA.
@@ -55,17 +52,36 @@ public class MongoDB {
         }
         finally {
         }
-
     }
-    public synchronized void evaluate(String script) {
+
+    public synchronized String evaluate(String script)
+        throws Exception {
 
         if(log.isDebugEnabled()) {
             log.debug("script: " + script);
         }
+
         db.requestStart();
         db.requestEnsureConnection();
-        db.eval(script);
+
+        String result = null;
+        Object o = db.eval(script);
+        if(o instanceof DBObject) {
+            result = JSON.serialize((DBObject)o);
+        }
+        else if(o instanceof Double) {
+            result = o.toString();
+        }
+        else if(o == null) {
+            //calls such as insert do not return anything
+            result = "ok";
+        }
+        else {
+            //we may want to implement a handler for unexpected return types
+            throw new Exception("Unexpected return type " + o);
+        }
         db.requestDone();
+        return result;
     }
 
     public void clear() {

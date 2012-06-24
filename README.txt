@@ -19,8 +19,15 @@ Server Address List
 Database
 jmeter
 
-Script
-db.jmeter.insert({"jan" : "1"})
+Example Script
+Insert
+db.jmeter.insert({"jan":"the great"})
+
+Count
+function() {return db.jmeter.find().count()}
+
+Find
+function() {return db.jmeter.find().toArray()}
 
 Hit Go
 
@@ -29,4 +36,6 @@ In the shell
 >db.jmeter.find()
 
 mongometer.jar lives in out/artifacts
-It's a java7, 64-bit linux build (just incase you have any issues)
+It's a java7, 64-bit linux build (just in case you have any issues)
+
+Ensure you have mongometer.jar and the mongo java driver jar in /usr/lib/jmeter/2.7/lib/ext

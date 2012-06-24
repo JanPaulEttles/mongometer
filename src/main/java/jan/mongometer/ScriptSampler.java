@@ -51,6 +51,8 @@ public class ScriptSampler
 
     public final static String SCRIPT = "ScriptSampler.script"; //$NON-NLS-1$
 
+    public static final String ENCODING = "UTF-8"; // $NON-NLS-1$
+
     public static MongoDB mongoDB;
 
     private static int classCount = 0; // keep track of classes created
@@ -66,29 +68,28 @@ public class ScriptSampler
 
         SampleResult res = new SampleResult();
         String data = getScript();
-        String response = null;
+        String response = Thread.currentThread().getName();
 
         res.setSampleLabel(getTitle());
+        res.setResponseCodeOK();
+        res.setResponseCode("200");
+        res.setSuccessful(true);
+        res.setResponseMessage("OK");// $NON-NLS-1$
+        res.setResponseMessageOK();
         res.sampleStart();
+
         try {
-
-            mongoDB.evaluate(getScript());
-
-            response = Thread.currentThread().getName();
             res.setSamplerData(data);
-            res.setResponseData(response.getBytes());
             res.setDataType(SampleResult.TEXT);
-
-            res.setResponseCodeOK();
-            res.setResponseCode("200");
-            res.setSuccessful(true);
-            res.setResponseMessage("OK");// $NON-NLS-1$
+            res.setContentType("text/plain"); // $NON-NLS-1$
+            res.setResponseData(mongoDB.evaluate(getScript()).getBytes());
         }
         catch (Exception ex) {
             log.warn("", ex);
             res.setResponseCode("500");// $NON-NLS-1$
             res.setSuccessful(false);
             res.setResponseMessage(ex.toString());
+            res.setResponseData(ex.getMessage().getBytes());
         }
         finally {
             res.sampleEnd();
