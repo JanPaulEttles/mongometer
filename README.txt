@@ -17,7 +17,7 @@ Start up jmeter
 
 Add a ThreadGroup
 Add MongoDB Sampler to the ThreadGroup
-Add Result Tree Listener to ThreadGroup
+Add View Result Tree Listener to ThreadGroup
 
 Server Address List
 127.0.0.1
