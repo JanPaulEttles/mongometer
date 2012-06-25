@@ -15,7 +15,6 @@ import org.apache.log.Logger;
  * Date: 17/06/12
  * Time: 20:46
  */
-//db.jmeter.insert({"java" : "1"})
 public class MongoDB {
 
     private final Logger log = LoggingManager.getLoggerForClass();
@@ -64,22 +63,9 @@ public class MongoDB {
         db.requestStart();
         db.requestEnsureConnection();
 
-        String result = null;
-        Object o = db.eval(script);
-        if(o instanceof DBObject) {
-            result = JSON.serialize((DBObject)o);
-        }
-        else if(o instanceof Double) {
-            result = o.toString();
-        }
-        else if(o == null) {
-            //calls such as insert do not return anything
-            result = "ok";
-        }
-        else {
-            //we may want to implement a handler for unexpected return types
-            throw new Exception("Unexpected return type " + o);
-        }
+        EvalResultHandler evalResultHandler = new EvalResultHandler();
+        String result = evalResultHandler.handle(db.eval(script));
+
         db.requestDone();
         return result;
     }
