@@ -15,6 +15,11 @@ $./mongo
 Start up jmeter
 /usr/lib/jmeter/2.7/bin/jmeter.sh
 
+Set the logging level in jmeter.properties
+log_level.jmeter
+log_level.jorphan=INFO
+log_level.jan=DEBUG
+
 Add a ThreadGroup
 Add MongoDB Sampler to the ThreadGroup
 Add View Result Tree Listener to ThreadGroup

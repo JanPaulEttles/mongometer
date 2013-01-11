@@ -20,29 +20,16 @@ public class MongoDB {
     private final Logger log = LoggingManager.getLoggerForClass();
 
     private Mongo mongo = null;
-    private DB db = null;
 
     public MongoDB(
             ArrayList<ServerAddress> serverAddresses,
-            String database,
-            String username,
-            String password,
             MongoOptions mongoOptions) {
 
         try {
             if(log.isDebugEnabled()) {
-                log.debug("database: " + database);
-                log.debug("username: " + username);
-                log.debug("password: " + password);
             }
 
             mongo = new Mongo(serverAddresses, mongoOptions);
-            db = mongo.getDB(database);
-
-            boolean authenticated = db.authenticate(username, password.toCharArray());
-            if(log.isDebugEnabled()) {
-                log.debug("authenticated: " + authenticated);
-            }
         }
         catch(Exception e) {
             if(log.isWarnEnabled()) {
@@ -53,11 +40,19 @@ public class MongoDB {
         }
     }
 
-    public synchronized String evaluate(String script)
+    public synchronized String evaluate(String database, String username, String password, String script)
         throws Exception {
 
         if(log.isDebugEnabled()) {
+            log.debug("username: " + username);
+            log.debug("password: " + password);
+            log.debug("database: " + database);
             log.debug("script: " + script);
+        }
+        DB db = mongo.getDB(database);
+        boolean authenticated = db.authenticate(username, password.toCharArray());
+        if(log.isDebugEnabled()) {
+            log.debug("authenticated: " + authenticated);
         }
 
         db.requestStart();
@@ -78,7 +73,7 @@ public class MongoDB {
         mongo.close();
 
         //there is no harm in trying to clear up
-        db = null;
+        //db = null;
         mongo = null;
         System.gc();
     }

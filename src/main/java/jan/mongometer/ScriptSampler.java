@@ -82,7 +82,11 @@ public class ScriptSampler
             res.setSamplerData(data);
             res.setDataType(SampleResult.TEXT);
             res.setContentType("text/plain"); // $NON-NLS-1$
-            res.setResponseData(mongoDB.evaluate(getScript()).getBytes());
+
+            res.setResponseData(mongoDB.evaluate(getDatabase(),
+                    getUsername(),
+                    getPassword(),
+                    data).getBytes());
         }
         catch (Exception ex) {
             log.warn("", ex);
@@ -260,7 +264,7 @@ public class ScriptSampler
     @Override
     public void testIterationStart(LoopIterationEvent arg0) {
         if(log.isDebugEnabled()) {
-            log.debug("testIterationStart : " + arg0);
+            log.debug("testIterationStart : " + arg0.getSource().getName());
         }
     }
 
@@ -309,11 +313,7 @@ public class ScriptSampler
             log.debug("options : " + mongoOptions.toString());
         }
 
-        mongoDB = new MongoDB(addresses,
-                getDatabase(),
-                getUsername(),
-                getPassword(),
-                mongoOptions);
+        mongoDB = new MongoDB(addresses, mongoOptions);
     }
 
 
@@ -324,13 +324,5 @@ public class ScriptSampler
 
     @Override
     public void testEnded(String arg0) {
-        if(log.isDebugEnabled()) {
-            log.debug("testEnded : " + arg0);
-        }
-        mongoDB.clear();
-
-        //why not....
-        mongoDB = null;
-        System.gc();
     }
 }
