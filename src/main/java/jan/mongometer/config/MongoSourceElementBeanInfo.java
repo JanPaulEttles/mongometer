@@ -1,33 +1,26 @@
-package jan.mongometer;
-
-import java.beans.PropertyDescriptor;
+package jan.mongometer.config;
 
 import org.apache.jmeter.testbeans.BeanInfoSupport;
-import org.apache.jmeter.testbeans.gui.TextAreaEditor;
-import org.apache.jmeter.testbeans.gui.TypeEditor;
 import org.apache.jorphan.logging.LoggingManager;
 import org.apache.log.Logger;
 
+import java.beans.PropertyDescriptor;
+
 /**
- * Created with IntelliJ IDEA.
  * User: jan
- * Date: 17/06/12
- * Time: 20:49
   */
-public class ScriptSamplerBeanInfo
+public class MongoSourceElementBeanInfo
         extends BeanInfoSupport {
 
     private static final Logger log = LoggingManager.getLoggerForClass();
 
-    public ScriptSamplerBeanInfo() {
-        super(ScriptSampler.class);
+    public MongoSourceElementBeanInfo() {
+        super(MongoSourceElement.class);
 
         //http://api.mongodb.org/java/2.7.2/com/mongodb/Mongo.html
         createPropertyGroup("mongodb", new String[] {
                 "connection",
-                "database",
-                "username",
-                "password" });
+                "source"});
 
         //http://api.mongodb.org/java/2.7.2/com/mongodb/MongoOptions.html/
         createPropertyGroup("options", new String[]{
@@ -48,19 +41,10 @@ public class ScriptSamplerBeanInfo
                 "writeOperationNumberOfServers",
                 "writeOperationTimeout" });
 
-        createPropertyGroup("sampler", new String[]{
-                "script"});
-
         PropertyDescriptor p = property("connection");
         p.setValue(NOT_UNDEFINED, Boolean.TRUE);
         p.setValue(DEFAULT, "");
-        p = property("database");
-        p.setValue(NOT_UNDEFINED, Boolean.TRUE);
-        p.setValue(DEFAULT, "");
-        p = property("username");
-        p.setValue(NOT_UNDEFINED, Boolean.TRUE);
-        p.setValue(DEFAULT, "");
-        p = property("password", TypeEditor.PasswordEditor);
+        p = property("source");
         p.setValue(NOT_UNDEFINED, Boolean.TRUE);
         p.setValue(DEFAULT, "");
 
@@ -104,12 +88,6 @@ public class ScriptSamplerBeanInfo
         p = property("writeOperationTimeout");
         p.setValue(NOT_UNDEFINED, Boolean.TRUE);
         p.setValue(DEFAULT, "0");
-
-        p = property("script");
-        p.setValue(NOT_UNDEFINED, Boolean.FALSE);
-        p.setValue(DEFAULT, "");
-        p.setValue(NOT_EXPRESSION, Boolean.TRUE);
-        p.setPropertyEditorClass(TextAreaEditor.class);
 
         if(log.isDebugEnabled()) {
             for (PropertyDescriptor pd : getPropertyDescriptors()) {

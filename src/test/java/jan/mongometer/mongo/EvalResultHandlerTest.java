@@ -1,23 +1,15 @@
-package jan.mongometer;
-
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+package jan.mongometer.mongo;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
-import jan.mongometer.ScriptSampler;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import jan.mongometer.mongo.EvalResultHandler;
+import org.junit.*;
+
+import static junit.framework.Assert.assertEquals;
 
 /**
- * Created with IntelliJ IDEA.
  * User: jan
- * Date: 25/06/12
- * Time: 19:29
  */
 public class EvalResultHandlerTest {
 
@@ -41,34 +33,33 @@ public class EvalResultHandlerTest {
 
     @Test
     public void testDouble() {
-        Double TEST_DOUBLE = new Double(2.0);
+        Double testDouble = new Double(2.0);
 
-        String expected = TEST_DOUBLE.toString();
+        String expected = testDouble.toString();
         EvalResultHandler evalResultHandler = new EvalResultHandler();
         String actual = evalResultHandler.handle(new Double(2.0));
 
         assertEquals(expected, actual);
-
     }
 
     @Test
     public void testDBObject() {
-        DBObject TEST_DBOBJECT = new BasicDBObject();
-        TEST_DBOBJECT.put("name", "jan");
-        TEST_DBOBJECT.put("super power", "invisibility");
+        DBObject testDBObject = new BasicDBObject();
+        testDBObject.put("name", "jan");
+        testDBObject.put("super power", "invisibility");
 
-        String expected = JSON.serialize(TEST_DBOBJECT);
+        String expected = JSON.serialize(testDBObject);
         EvalResultHandler evalResultHandler = new EvalResultHandler();
-        String actual = evalResultHandler.handle(TEST_DBOBJECT);
+        String actual = evalResultHandler.handle(testDBObject);
 
         assertEquals(expected, actual);
     }
 
     @Test
     public void testInteger() {
-        Integer TEST_INTEGER = new Integer(2);
+        Integer testInteger = new Integer(2);
 
-        String expected = TEST_INTEGER.toString();
+        String expected = testInteger.toString();
         EvalResultHandler evalResultHandler = new EvalResultHandler();
         String actual = evalResultHandler.handle(new Integer(2));
 
@@ -77,9 +68,9 @@ public class EvalResultHandlerTest {
 
     @Test
     public void testString() {
-        String TEST_STRING = new String("jan");
+        String testString = new String("jan");
 
-        String expected = TEST_STRING;
+        String expected = testString;
         EvalResultHandler evalResultHandler = new EvalResultHandler();
         String actual = evalResultHandler.handle(new String("jan"));
 

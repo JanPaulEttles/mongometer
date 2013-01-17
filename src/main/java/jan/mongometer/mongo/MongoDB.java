@@ -1,19 +1,17 @@
-package jan.mongometer;
+package jan.mongometer.mongo;
 
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
+import com.mongodb.DB;
+import com.mongodb.Mongo;
+import com.mongodb.MongoOptions;
+import com.mongodb.ServerAddress;
 
-import com.mongodb.*;
-import com.mongodb.util.JSON;
 import org.apache.jorphan.logging.LoggingManager;
 import org.apache.log.Logger;
 
+import java.util.ArrayList;
+
 /**
- * Created with IntelliJ IDEA.
  * User: jan
- * Date: 17/06/12
- * Time: 20:46
  */
 public class MongoDB {
 
@@ -40,29 +38,20 @@ public class MongoDB {
         }
     }
 
-    public synchronized String evaluate(String database, String username, String password, String script)
-        throws Exception {
+    public synchronized DB getDB(String database, String username, String password)
+            throws MongoMeterException {
 
         if(log.isDebugEnabled()) {
             log.debug("username: " + username);
             log.debug("password: " + password);
             log.debug("database: " + database);
-            log.debug("script: " + script);
         }
         DB db = mongo.getDB(database);
         boolean authenticated = db.authenticate(username, password.toCharArray());
         if(log.isDebugEnabled()) {
             log.debug("authenticated: " + authenticated);
         }
-
-        db.requestStart();
-        db.requestEnsureConnection();
-
-        EvalResultHandler evalResultHandler = new EvalResultHandler();
-        String result = evalResultHandler.handle(db.eval(script));
-
-        db.requestDone();
-        return result;
+        return db;
     }
 
     public void clear() {

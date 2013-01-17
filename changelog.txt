@@ -1,0 +1,5 @@
+jmeter has been upgraded to the current version, ie 2.8
+
+MongoSource has been refactored, ie the mongodb connection settings have been pulled out of ScriptSampler and into MongoSourceElement
+this mongosourcelement is available under config
+

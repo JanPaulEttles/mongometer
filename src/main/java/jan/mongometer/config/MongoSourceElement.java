@@ -1,117 +1,50 @@
-package jan.mongometer;
+package jan.mongometer.config;
+
+import com.mongodb.MongoOptions;
+import com.mongodb.ServerAddress;
+import jan.mongometer.mongo.MongoDB;
+import jan.mongometer.mongo.MongoMeterException;
+import org.apache.jmeter.config.ConfigElement;
+import org.apache.jmeter.testbeans.TestBean;
+import org.apache.jmeter.testelement.AbstractTestElement;
+import org.apache.jmeter.testelement.TestStateListener;
+import org.apache.jmeter.threads.JMeterContextService;
+import org.apache.jorphan.logging.LoggingManager;
+import org.apache.log.Logger;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.mongodb.MongoOptions;
-import com.mongodb.ServerAddress;
-import org.apache.jmeter.engine.event.LoopIterationEvent;
-import org.apache.jmeter.samplers.AbstractSampler;
-import org.apache.jmeter.samplers.Entry;
-import org.apache.jmeter.samplers.SampleResult;
-import org.apache.jmeter.testbeans.TestBean;
-import org.apache.jmeter.testelement.TestListener;
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
-
 /**
- * Created with IntelliJ IDEA.
  * User: jan
- * Date: 17/06/12
- * Time: 20:48
  */
-public class ScriptSampler
-        extends AbstractSampler
-        implements TestBean, TestListener {
-
-    private static final long serialVersionUID = -678108159079724396L;
+public class MongoSourceElement
+    extends AbstractTestElement
+        implements ConfigElement, TestStateListener, TestBean {
 
     private static final Logger log = LoggingManager.getLoggerForClass();
 
-    public final static String CONNECTION = "ScriptSampler.connection"; //$NON-NLS-1$
-    public final static String DATABASE = "ScriptSampler.database"; //$NON-NLS-1$
-    public final static String USERNAME = "ScriptSampler.username"; //$NON-NLS-1$
-    public final static String PASSWORD = "ScriptSampler.password"; //$NON-NLS-1$
+    public final static String CONNECTION = "MongoSourceElement.connection"; //$NON-NLS-1$
+    public final static String SOURCE = "MongoSourceElement.source"; //$NON-NLS-1$
 
-    public final static String AUTO_CONNECT_RETRY = "ScriptSampler.autoConnectRetry"; //$NON-NLS-1$
-    public final static String CONNECTIONS_PER_HOST = "ScriptSampler.connectionsPerHost"; //$NON-NLS-1$
-    public final static String CONNECT_TIMEOUT = "ScriptSampler.connectTimeout"; //$NON-NLS-1$
-    public final static String MAX_AUTO_CONNECT_RETRY_TIME = "ScriptSampler.maxAutoConnectRetryTime"; //$NON-NLS-1$
-    public final static String MAX_WAIT_TIME = "ScriptSampler.maxWaitTime"; //$NON-NLS-1$
-    public final static String SOCKET_TIMEOUT = "ScriptSampler.socketTimeout"; //$NON-NLS-1$
-    public final static String SOCKET_KEEP_ALIVE = "ScriptSampler.socketKeepAlive"; //$NON-NLS-1$
-    public final static String THREADS_ALLOWED_TO_BLOCK_MULTIPLIER = "ScriptSampler.threadsAllowedToBlockForConnectionMultiplier"; //$NON-NLS-1$
+    public final static String AUTO_CONNECT_RETRY = "MongoSourceElement.autoConnectRetry"; //$NON-NLS-1$
+    public final static String CONNECTIONS_PER_HOST = "MongoSourceElement.connectionsPerHost"; //$NON-NLS-1$
+    public final static String CONNECT_TIMEOUT = "MongoSourceElement.connectTimeout"; //$NON-NLS-1$
+    public final static String MAX_AUTO_CONNECT_RETRY_TIME = "MongoSourceElement.maxAutoConnectRetryTime"; //$NON-NLS-1$
+    public final static String MAX_WAIT_TIME = "MongoSourceElement.maxWaitTime"; //$NON-NLS-1$
+    public final static String SOCKET_TIMEOUT = "MongoSourceElement.socketTimeout"; //$NON-NLS-1$
+    public final static String SOCKET_KEEP_ALIVE = "MongoSourceElement.socketKeepAlive"; //$NON-NLS-1$
+    public final static String THREADS_ALLOWED_TO_BLOCK_MULTIPLIER = "MongoSourceElement.threadsAllowedToBlockForConnectionMultiplier"; //$NON-NLS-1$
 
-    public final static String FSYNC = "ScriptSampler.fsync"; //$NON-NLS-1$
-    public final static String SAFE = "ScriptSampler.safe"; //$NON-NLS-1$
-    public final static String WAIT_FOR_JOURNALING = "ScriptSampler.waitForJournaling"; //$NON-NLS-1$
-    public final static String WRITE_OPERATION_NUMBER_OF_SERVERS = "ScriptSampler.writeOperationNumberOfServers"; //$NON-NLS-1$
-    public final static String WRITE_OPERATION_TIMEOUT = "ScriptSampler.writeOperationTimeout"; //$NON-NLS-1$
+    public final static String FSYNC = "MongoSourceElement.fsync"; //$NON-NLS-1$
+    public final static String SAFE = "MongoSourceElement.safe"; //$NON-NLS-1$
+    public final static String WAIT_FOR_JOURNALING = "MongoSourceElement.waitForJournaling"; //$NON-NLS-1$
+    public final static String WRITE_OPERATION_NUMBER_OF_SERVERS = "MongoSourceElement.writeOperationNumberOfServers"; //$NON-NLS-1$
+    public final static String WRITE_OPERATION_TIMEOUT = "MongoSourceElement.writeOperationTimeout"; //$NON-NLS-1$
 
-    public final static String SCRIPT = "ScriptSampler.script"; //$NON-NLS-1$
-
-    public static final String ENCODING = "UTF-8"; // $NON-NLS-1$
-
-    public static MongoDB mongoDB;
-
-    private static int classCount = 0; // keep track of classes created
-
-    public ScriptSampler() {
-        classCount++;
-        trace("ScriptSampler()");
-
-    }
-
-    public SampleResult sample(Entry e) {
-        trace("sample()");
-
-        SampleResult res = new SampleResult();
-        String data = getScript();
-        String response = Thread.currentThread().getName();
-
-        res.setSampleLabel(getTitle());
-        res.setResponseCodeOK();
-        res.setResponseCode("200");
-        res.setSuccessful(true);
-        res.setResponseMessage("OK");// $NON-NLS-1$
-        res.setResponseMessageOK();
-        res.sampleStart();
-
-        try {
-            res.setSamplerData(data);
-            res.setDataType(SampleResult.TEXT);
-            res.setContentType("text/plain"); // $NON-NLS-1$
-
-            res.setResponseData(mongoDB.evaluate(getDatabase(),
-                    getUsername(),
-                    getPassword(),
-                    data).getBytes());
-        }
-        catch (Exception ex) {
-            log.warn("", ex);
-            res.setResponseCode("500");// $NON-NLS-1$
-            res.setSuccessful(false);
-            res.setResponseMessage(ex.toString());
-            res.setResponseData(ex.getMessage().getBytes());
-        }
-        finally {
-            res.sampleEnd();
-        }
-
-        return res;
-    }
-
-    private String getTitle() {
+    public String getTitle() {
         return this.getName();
-    }
-
-    public String getScript() {
-        return getPropertyAsString(SCRIPT);
-    }
-
-    public void setScript(String script) {
-        setProperty(SCRIPT, script);
     }
 
     public String getConnection() {
@@ -122,28 +55,12 @@ public class ScriptSampler
         setProperty(CONNECTION, connection);
     }
 
-    public String getDatabase() {
-        return getPropertyAsString(DATABASE);
+    public String getSource() {
+        return getPropertyAsString(SOURCE);
     }
 
-    public void setDatabase(String database) {
-        setProperty(DATABASE, database);
-    }
-
-    public String getUsername() {
-        return getPropertyAsString(USERNAME);
-    }
-
-    public void setUsername(String username) {
-        setProperty(USERNAME, username);
-    }
-
-    public String getPassword() {
-        return getPropertyAsString(PASSWORD);
-    }
-
-    public void setPassword(String password) {
-        setProperty(PASSWORD, password);
+    public void setSource(String source) {
+        setProperty(SOURCE, source);
     }
 
     public String getAutoConnectRetry() {
@@ -250,35 +167,39 @@ public class ScriptSampler
         setProperty(WRITE_OPERATION_TIMEOUT, writeOperationTimeout);
     }
 
+    public static MongoDB getMongoDB(String source)
+            throws MongoMeterException {
 
-    /*
-    * Helper
-    */
-    private void trace(String s) {
-        String tl = getTitle();
-        String tn = Thread.currentThread().getName();
-        String th = this.toString();
-        log.debug(tn + " (" + classCount + ") " + tl + " " + s + " " + th);
+        Object mongoSource = JMeterContextService.getContext().getVariables().getObject(source);
+
+        if(mongoSource == null) {
+            throw new MongoMeterException("mongoSource is null");
+        }
+        else {
+            if(mongoSource instanceof MongoDB) {
+                return (MongoDB)mongoSource;
+            }
+            else {
+                throw new MongoMeterException("ooops, something went awry with the cast.");
+            }
+        }
     }
 
     @Override
-    public void testIterationStart(LoopIterationEvent arg0) {
-        if(log.isDebugEnabled()) {
-            log.debug("testIterationStart : " + arg0.getSource().getName());
-        }
+    public void addConfigElement(ConfigElement configElement) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public boolean expectsModification() {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void testStarted() {
-        testStarted("");
-    }
-
-    @Override
-    public void testStarted(String arg0) {
         if(log.isDebugEnabled()) {
-            log.debug("testStarted : " + arg0);
+            log.debug(getTitle() + " testStarted");
         }
-
         ArrayList<ServerAddress> addresses = new ArrayList<ServerAddress>();
         try {
             for(String connection : Arrays.asList(getConnection().split("\\s*,\\s*"))) {
@@ -313,16 +234,37 @@ public class ScriptSampler
             log.debug("options : " + mongoOptions.toString());
         }
 
-        mongoDB = new MongoDB(addresses, mongoOptions);
+        MongoDB mongoDB = new MongoDB(addresses, mongoOptions);
+
+        //JMeterVariables variables =
+        if(getThreadContext().getVariables().getObject(getSource()) != null) {
+            if(log.isWarnEnabled()) {
+                log.warn(getSource() + " has already been defined.");
+            }
+        }
+        else {
+            if(log.isDebugEnabled()) {
+                log.debug(getSource() + "  is being defined.");
+            }
+            getThreadContext().getVariables().putObject(getSource(), mongoDB);
+        }
     }
 
+    @Override
+    public void testStarted(String s) {
+        testStarted();
+    }
 
     @Override
     public void testEnded() {
-        testEnded("");
+        if(log.isDebugEnabled()) {
+            log.debug(getTitle() + " testEnded");
+        }
+        ((MongoDB)getThreadContext().getVariables().getObject(getSource())).clear();
     }
 
     @Override
-    public void testEnded(String arg0) {
+    public void testEnded(String s) {
+        testEnded();
     }
 }

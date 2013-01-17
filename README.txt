@@ -2,7 +2,7 @@ To quickstart, just check everything is hanging together.
 
 Copy across the jars
 mongometer.jar lives in out/artifacts
-Ensure you have mongometer.jar and the mongo java driver jar in /usr/lib/jmeter/2.7/lib/ext
+Ensure you have mongometer.jar and the mongo java driver jar in /usr/lib/jmeter/2.8/lib/ext
 It's a java7, 64-bit linux build (just in case you have any issues)
 
 Start up mongodb
@@ -13,12 +13,13 @@ $cd /usr/lib/mongodb/2.0.6/bin/
 $./mongo
 
 Start up jmeter
-/usr/lib/jmeter/2.7/bin/jmeter.sh
+/usr/lib/jmeter/2.8/bin/jmeter.sh
 
 Set the logging level in jmeter.properties
-log_level.jmeter
-log_level.jorphan=INFO
-log_level.jan=DEBUG
+#log_level.jan=DEBUG
+log_level.jan.mongometer.config=DEBUG
+#log_level.jan.mongometer.mongo=DEBUG
+#log_level.jan.mongometer.sampler=DEBUG
 
 Add a ThreadGroup
 Add MongoDB Sampler to the ThreadGroup

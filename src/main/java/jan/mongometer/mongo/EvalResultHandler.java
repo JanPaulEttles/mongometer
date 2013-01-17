@@ -1,13 +1,10 @@
-package jan.mongometer;
+package jan.mongometer.mongo;
 
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 
 /**
- * Created with IntelliJ IDEA.
  * User: jan
- * Date: 25/06/12
- * Time: 19:21
  */
 public class EvalResultHandler {
 
