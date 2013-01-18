@@ -2,6 +2,7 @@ package jan.mongometer.mongo;
 
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
+import jan.mongometer.MongoMeterException;
 
 /**
  * User: jan

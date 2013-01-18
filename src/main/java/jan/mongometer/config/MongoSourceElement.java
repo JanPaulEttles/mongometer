@@ -3,7 +3,7 @@ package jan.mongometer.config;
 import com.mongodb.MongoOptions;
 import com.mongodb.ServerAddress;
 import jan.mongometer.mongo.MongoDB;
-import jan.mongometer.mongo.MongoMeterException;
+import jan.mongometer.MongoMeterException;
 import org.apache.jmeter.config.ConfigElement;
 import org.apache.jmeter.testbeans.TestBean;
 import org.apache.jmeter.testelement.AbstractTestElement;
@@ -234,9 +234,6 @@ public class MongoSourceElement
             log.debug("options : " + mongoOptions.toString());
         }
 
-        MongoDB mongoDB = new MongoDB(addresses, mongoOptions);
-
-        //JMeterVariables variables =
         if(getThreadContext().getVariables().getObject(getSource()) != null) {
             if(log.isWarnEnabled()) {
                 log.warn(getSource() + " has already been defined.");
@@ -246,7 +243,7 @@ public class MongoSourceElement
             if(log.isDebugEnabled()) {
                 log.debug(getSource() + "  is being defined.");
             }
-            getThreadContext().getVariables().putObject(getSource(), mongoDB);
+            getThreadContext().getVariables().putObject(getSource(), new MongoDB(addresses, mongoOptions));
         }
     }
 

@@ -22,14 +22,11 @@ public class MongoUtils {
 
         ArrayList<ServerAddress> addresses = new ArrayList<ServerAddress>();
         try {
-            for(String connection : Arrays.asList(connections.split("\\s*,\\s*"))) {
-
-                String[] hostPort = connection.split("\\s*:\\s*");
-
-
+            for(String connection : Arrays.asList(connections.split(","))) {
                 int port = 27017;
-                if(hostPort[1] != null) {
-                    port = Integer.parseInt(hostPort[1]);
+                String[] hostPort = connection.split(":");
+                if(hostPort.length > 1 && hostPort[1] != null) {
+                    port = Integer.parseInt(hostPort[1].trim());
                 }
                 addresses.add(new ServerAddress(hostPort[0], port));
             }
@@ -39,7 +36,6 @@ public class MongoUtils {
                 log.warn("", uhe);
             }
         }
-
         return addresses;
     }
 }

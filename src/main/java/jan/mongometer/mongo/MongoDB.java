@@ -5,6 +5,7 @@ import com.mongodb.Mongo;
 import com.mongodb.MongoOptions;
 import com.mongodb.ServerAddress;
 
+import jan.mongometer.MongoMeterException;
 import org.apache.jorphan.logging.LoggingManager;
 import org.apache.log.Logger;
 

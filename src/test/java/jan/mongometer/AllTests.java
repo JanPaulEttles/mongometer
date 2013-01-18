@@ -10,7 +10,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         jan.mongometer.config.MongoSourceElementTest.class,
         jan.mongometer.mongo.EvalResultHandlerTest.class,
-        jan.mongometer.sampler.MongoScriptSamplerTest.class
+        jan.mongometer.sampler.MongoScriptSamplerTest.class,
+        jan.mongometer.mongo.MongoUtilsTest.class
 })
 public class AllTests {
 }
