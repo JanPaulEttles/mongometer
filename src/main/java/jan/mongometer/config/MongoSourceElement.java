@@ -4,6 +4,7 @@ import com.mongodb.MongoOptions;
 import com.mongodb.ServerAddress;
 import jan.mongometer.mongo.MongoDB;
 import jan.mongometer.MongoMeterException;
+import jan.mongometer.mongo.MongoUtils;
 import org.apache.jmeter.config.ConfigElement;
 import org.apache.jmeter.testbeans.TestBean;
 import org.apache.jmeter.testelement.AbstractTestElement;
@@ -187,32 +188,17 @@ public class MongoSourceElement
 
     @Override
     public void addConfigElement(ConfigElement configElement) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public boolean expectsModification() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
     }
 
     @Override
     public void testStarted() {
         if(log.isDebugEnabled()) {
             log.debug(getTitle() + " testStarted");
-        }
-        ArrayList<ServerAddress> addresses = new ArrayList<ServerAddress>();
-        try {
-            for(String connection : Arrays.asList(getConnection().split("\\s*,\\s*"))) {
-                addresses.add(new ServerAddress(connection, 27017));
-                if(log.isDebugEnabled()) {
-                    log.debug("address : " + connection);
-                }
-            }
-        }
-        catch(UnknownHostException uhe) {
-            if(log.isWarnEnabled()) {
-                log.warn("", uhe);
-            }
         }
 
         MongoOptions mongoOptions = new MongoOptions();
@@ -243,7 +229,7 @@ public class MongoSourceElement
             if(log.isDebugEnabled()) {
                 log.debug(getSource() + "  is being defined.");
             }
-            getThreadContext().getVariables().putObject(getSource(), new MongoDB(addresses, mongoOptions));
+            getThreadContext().getVariables().putObject(getSource(), new MongoDB(MongoUtils.toServerAddresses(getConnection()), mongoOptions));
         }
     }
 

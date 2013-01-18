@@ -11,7 +11,7 @@ public class EvalResultHandler {
 
     //This can lead to code smell, meh! Do we care
     public String handle(Object o) {
-        if(o == null){
+        if(o == null) {
             return "ok";
         }
 

@@ -4,6 +4,7 @@ import jan.mongometer.sampler.MongoScriptSampler;
 import org.apache.jmeter.samplers.SampleResult;
 import org.junit.*;
 
+import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 /**
@@ -66,9 +67,24 @@ public class MongoScriptSamplerTest {
         assertSame(instance.getScript(), TEST_STRING);
     }
 
-    public void testRunner() {
-       // MongoScriptSamplerMock instance = new MongoScriptSamplerMock();
+    @Test
+    public void testScriptSampler() {
+        MongoScriptSamplerMock instance = new MongoScriptSamplerMock();
         SampleResult result = new SampleResult();
 
+
+    }
+
+    @Test
+    public void testScriptRunner() {
+        MongoScriptRunnerMock instance = new MongoScriptRunnerMock();
+        String expected = null;
+        try {
+            expected = instance.evaluate(null, "result");
+        }
+        catch (Exception e) {
+
+        }
+        assertEquals(expected, "result");
     }
 }

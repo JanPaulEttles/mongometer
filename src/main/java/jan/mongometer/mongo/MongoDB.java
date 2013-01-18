@@ -25,17 +25,12 @@ public class MongoDB {
             MongoOptions mongoOptions) {
 
         try {
-            if(log.isDebugEnabled()) {
-            }
-
             mongo = new Mongo(serverAddresses, mongoOptions);
         }
         catch(Exception e) {
             if(log.isWarnEnabled()) {
                 log.warn("catch all", e);
             }
-        }
-        finally {
         }
     }
 
@@ -61,9 +56,7 @@ public class MongoDB {
         }
 
         mongo.close();
-
         //there is no harm in trying to clear up
-        //db = null;
         mongo = null;
         System.gc();
     }
