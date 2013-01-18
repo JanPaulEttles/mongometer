@@ -1,0 +1,25 @@
+Index: src/main/java/jan/mongometer/sampler/MongoScriptSampler.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/jan/mongometer/sampler/MongoScriptSampler.java	(revision )
++++ src/main/java/jan/mongometer/sampler/MongoScriptSampler.java	(revision )
+@@ -2,6 +2,7 @@
+ 
+ import com.mongodb.DB;
+ import jan.mongometer.config.MongoSourceElement;
++import jan.mongometer.mongo.MongoDB;
+ import org.apache.jmeter.samplers.AbstractSampler;
+ import org.apache.jmeter.samplers.Entry;
+ import org.apache.jmeter.samplers.SampleResult;
+@@ -53,7 +54,7 @@
+             MongoDB mongoDB = MongoSourceElement.getMongoDB(getSource());
+             DB db = mongoDB.getDB(getDatabase(), getUsername(), getPassword());
+ 
+-            ScriptRunner runner = new ScriptRunner();
++            MongoScriptRunner runner = new MongoScriptRunner();
+ 
+             res.latencyEnd();
+             res.setResponseData(runner.evaluate(db, data).getBytes());
+\ No newline at end of file

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="mongometer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/mongometer_jar</output-path>
+    <root id="archive" name="mongometer.jar">
+      <element id="module-output" name="mongometer" />
+    </root>
+  </artifact>
+</component>
