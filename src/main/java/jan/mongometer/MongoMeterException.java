@@ -1,4 +1,4 @@
-package jan.mongometer.mongo;
+package jan.mongometer;
 
 public class MongoMeterException
     extends RuntimeException {
