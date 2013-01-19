@@ -12,14 +12,14 @@ Start up a shell
 $cd /usr/lib/mongodb/2.0.6/bin/
 $./mongo
 
-Start up jmeter
-/usr/lib/jmeter/2.8/bin/jmeter.sh
-
 Set the logging level in jmeter.properties
 #log_level.jan=DEBUG
 log_level.jan.mongometer.config=DEBUG
 #log_level.jan.mongometer.mongo=DEBUG
 #log_level.jan.mongometer.sampler=DEBUG
+
+Start up jmeter
+/usr/lib/jmeter/2.8/bin/jmeter.sh
 
 Add a ThreadGroup
 Add MongoDB Sampler to the ThreadGroup
