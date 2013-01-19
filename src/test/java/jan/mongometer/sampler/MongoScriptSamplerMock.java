@@ -48,5 +48,4 @@ public class MongoScriptSamplerMock
 
         return res;
     }
-
 }

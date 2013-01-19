@@ -74,17 +74,4 @@ public class MongoScriptSamplerTest {
 
 
     }
-
-    @Test
-    public void testScriptRunner() {
-        MongoScriptRunnerMock instance = new MongoScriptRunnerMock();
-        String expected = null;
-        try {
-            expected = instance.evaluate(null, "result");
-        }
-        catch (Exception e) {
-
-        }
-        assertEquals(expected, "result");
-    }
 }
