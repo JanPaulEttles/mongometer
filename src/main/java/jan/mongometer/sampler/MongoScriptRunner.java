@@ -29,6 +29,10 @@ public class MongoScriptRunner {
         EvalResultHandler evalResultHandler = new EvalResultHandler();
         String result = evalResultHandler.handle(db.eval(script));
 
+        if(log.isDebugEnabled()) {
+            log.debug("Result : " + result);
+        }
+
         db.requestDone();
 
         if(log.isDebugEnabled()) {

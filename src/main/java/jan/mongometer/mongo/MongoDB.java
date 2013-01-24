@@ -43,7 +43,13 @@ public class MongoDB {
             log.debug("database: " + database);
         }
         DB db = mongo.getDB(database);
-        boolean authenticated = db.authenticate(username, password.toCharArray());
+        boolean authenticated = db.isAuthenticated();
+
+        if(!authenticated) {
+            if(username != null && password != null && username.length() > 0 && password.length() > 0) {
+                authenticated = db.authenticate(username, password.toCharArray());
+            }
+        }
         if(log.isDebugEnabled()) {
             log.debug("authenticated: " + authenticated);
         }
