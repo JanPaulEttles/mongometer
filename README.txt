@@ -18,6 +18,16 @@ log_level.jan.mongometer.config=DEBUG
 #log_level.jan.mongometer.mongo=DEBUG
 #log_level.jan.mongometer.sampler=DEBUG
 
+
+Inside /usr/lib/jmeter/2.8/lib/ext/ApacheJMeter_core.jar
+Edit this
+/org/apache/jmeter/resources/messages.properties
+Change Line 682
+from
+property_tool_tip={0}\: {1}
+to
+property_tool_tip=<html><b>{0}</b><br><br>{1}</html>
+
 Start up jmeter
 /usr/lib/jmeter/2.8/bin/jmeter.sh
 
